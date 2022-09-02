@@ -246,10 +246,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	};
 
 	Vertex  vertices[] = {
-		{{-0.4f, -0.7f, 0.0f},	{0.0f, 1.0f}}, // 左下
-		{{-0.4f,  0.7f, 0.0f},	{0.0f, 0.0f}}, // 左上 
-		{{ 0.4f, -0.7f, 0.0f},	{1.0f, 1.0f}}, // 右下
-		{{ 0.4f,  0.7f, 0.0f},	{1.0f, 0.0f}}, // 右上
+		{{-0.5f, -0.45f, 0.0f},	{0.0f, 1.0f}}, // 左下0
+		{{-0.5f,  0.45f, 0.0f},	{0.0f, 0.0f}}, // 左上1
+		{{ 0.0f, -0.45f, 0.0f},	{1.0f, 1.0f}}, // 右下2
+		{{ 0.0f,  0.45f, 0.0f},	{1.0f, 0.0f}}, // 右上3
+		
 	};
 
 	//XMFLOAT3 vertices[] = {	//TRIANGLELIST
@@ -314,7 +315,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	vbView.StrideInBytes = sizeof(vertices[0]); // 1頂点あたりのバイト数
 
 	//Chapter4_11_2 P150
-	unsigned short indices[] = { 0, 1, 2,    2, 1, 3 };
+	unsigned short indices[] = { 0, 1, 2 ,  2, 1, 3 };
 	ID3D12Resource* idxBuff = nullptr;
 	resdesc.Width = sizeof(indices);
 	result = _dev->CreateCommittedResource(
@@ -325,11 +326,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		nullptr,
 		IID_PPV_ARGS(&idxBuff));
 
+	
+
 	//作ったバッファにインデックスデータをコピー
 	unsigned short* mappedIdx = nullptr;
 	idxBuff->Map(0, nullptr, (void**)&mappedIdx);
 	std::copy(std::begin(indices), std::end(indices), mappedIdx);
 	idxBuff->Unmap(0, nullptr);
+
+	
 
 	//インデックスバッファビューを作成
 	D3D12_INDEX_BUFFER_VIEW ibView = {};
@@ -337,7 +342,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ibView.Format = DXGI_FORMAT_R16_UINT;
 	ibView.SizeInBytes = sizeof(indices);
 
-
+	
 
 
 
